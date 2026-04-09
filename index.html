@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Road Running Painters — Delaware's Premier House Painters</title>
+    <meta name="description" content="Professional interior and exterior house painting in Delaware. Road Running Painters delivers flawless results with premium paint and expert craftsmanship." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --font-display: "Playfair Display", Georgia, serif;
+            --font-body: "Barlow", system-ui, sans-serif;
+
+            --color-bg: #CECECE;
+            --color-primary: #305659;
+            --color-mint: #91CABB;
+            --color-gold: #E8C277;
+            --color-rust: #D6572C;
+            --color-dark: #1a2e30;
+            --color-text: #1e2a2b;
+            --color-muted: #4a5e60;
+            --color-surface: #b8b8b8;
+            --color-card: #d8d8d8;
+            --color-border: rgba(48,86,89,0.15);
+
+            --radius-pill: 999px;
+            --container-max: 90rem;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            line-height: 1.5;
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; }
+        img, svg { display: block; max-width: 100%; }
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        /* ===== KEYFRAMES ===== */
+        @keyframes marquee { 0% { transform: translate(0) } to { transform: translateX(calc(-50% - 2rem)) } }
+        @keyframes float-a { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+        @keyframes float-b { 0%,100%{transform:translateY(-10px)} 50%{transform:translateY(6px)} }
+        @keyframes brush-wipe { from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0% 0 0)} }
+
+        
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            transition: all 500ms;
+        }
+        header.scrolled {
+            background: rgba(206,206,206,0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 1px 0 var(--color-border);
+        }
+        nav {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: flex; height: 5rem;
+            align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+        @media (min-width: 1024px) { nav { padding: 0 3rem; } }
+
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            transition: opacity 300ms;
+        }
+        .nav-logo:hover { opacity: 0.75; }
+        .nav-logo-svg { width: 188px; height: 188px; }
+        .nav-logo-text {
+            font-family: var(--font-display); font-size: 1.1rem;
+            font-weight: 600; letter-spacing: 0.02em;
+            color: var(--color-primary); line-height: 1.2;
+        }
+        .nav-logo-sub {
+            font-family: var(--font-body); font-size: 0.6rem;
+            text-transform: uppercase; letter-spacing: 0.18em;
+            color: var(--color-muted); display: block;
+        }
+
+        .nav-links { display: none; align-items: center; gap: 2.5rem; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .nav-link {
+            position: relative;
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: .14em;
+            color: var(--color-muted); transition: color 300ms; font-weight: 500;
+        }
+        .nav-link:hover { color: var(--color-primary); }
+        .nav-link span {
+            position: absolute; bottom: -4px; left: 50%;
+            height: 2px; width: 0; transform: translateX(-50%);
+            background: var(--color-rust); border-radius: 2px;
+            transition: width 300ms;
+        }
+        .nav-link:hover span { width: 100%; }
+
+        .nav-cta {
+            display: inline-flex; height: 2.5rem; align-items: center;
+            border-radius: var(--radius-pill);
+            background: var(--color-primary); padding: 0 1.5rem;
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+            color: #fff; transition: background 300ms; cursor: pointer;
+        }
+        .nav-cta:hover { background: var(--color-rust); }
+
+        .mobile-menu-btn {
+            display: flex; width: 2.5rem; height: 2.5rem;
+            align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer;
+            color: var(--color-primary);
+        }
+        @media (min-width: 768px) { .mobile-menu-btn { display: none; } }
+
+        .mobile-menu {
+            position: fixed; inset: 0; z-index: 40;
+            background: var(--color-bg);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 2rem; opacity: 0; pointer-events: none;
+            transition: opacity 300ms;
+        }
+        .mobile-menu.open { opacity: 1; pointer-events: all; }
+        .mobile-menu a {
+            font-family: var(--font-display); font-size: 2rem;
+            font-weight: 400; color: var(--color-primary);
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 500ms, transform 500ms;
+            transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .mobile-menu.open a { opacity: 1; transform: translateY(0); }
+        .mobile-menu.open a:nth-child(1) { transition-delay: 0.08s; }
+        .mobile-menu.open a:nth-child(2) { transition-delay: 0.16s; }
+        .mobile-menu.open a:nth-child(3) { transition-delay: 0.24s; }
+        .mobile-menu.open a:nth-child(4) { transition-delay: 0.32s; }
+        .mobile-menu.open a:nth-child(5) { transition-delay: 0.40s; }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            position: relative;
+            min-height: 100dvh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            background: var(--color-bg);
+        }
+
+        /* Diagonal stripe background */
+        .hero-bg-stripes {
+            position: absolute; inset: 0; z-index: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent,
+                transparent 60px,
+                rgba(48,86,89,0.04) 60px,
+                rgba(48,86,89,0.04) 61px
+            );
+        }
+
+        /* Floating color blobs */
+        .hero-blob {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
+        }
+        .hero-blob-1 {
+            width: 500px; height: 500px;
+            background: var(--color-mint);
+            top: -100px; right: -100px;
+            animation: float-a 8s ease-in-out infinite;
+        }
+        .hero-blob-2 {
+            width: 400px; height: 400px;
+            background: var(--color-gold);
+            bottom: -80px; left: -80px;
+            animation: float-b 10s ease-in-out infinite;
+        }
+        .hero-blob-3 {
+            width: 300px; height: 300px;
+            background: var(--color-rust);
+            top: 40%; left: 55%;
+            animation: float-a 12s ease-in-out infinite;
+            opacity: 0.2;
+        }
+
+        /* Floating paint swatches */
+        .hero-card {
+            position: absolute; display: none; opacity: 0;
+        }
+        @media (min-width: 1024px) { .hero-card { display: block; } }
+
+        .hero-content {
+            position: relative; z-index: 10;
+            max-width: 72rem; margin: 0 auto;
+            padding: 0 1.5rem; text-align: center;
+            padding-top: 120px;
+        }
+
+        .hero-eyebrow {
+            position: relative; display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: .2em;
+            color: var(--color-rust); font-weight: 600; margin-bottom: 1.5rem;
+        }
+        .hero-eyebrow::before, .hero-eyebrow::after {
+            content: ''; display: block; height: 1px; width: 2rem;
+            background: var(--color-rust);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw + 1rem, 7rem);
+            font-weight: 500; line-height: 1;
+            letter-spacing: -0.03em;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+        .hero-title em {
+            font-style: italic; font-weight: 400;
+            color: var(--color-rust);
+            line-height: 1.2;
+        }
+        .hero-word-wrap { display: inline-block; overflow: hidden; padding-bottom: 0.1em; height: auto; padding-left: 0.1em;}
+        .hero-word { display: inline-block; transform-origin: bottom; }
+
+        .hero-sub {
+            max-width: 38rem; margin: 0 auto 3rem;
+            font-size: 1.15rem; color: var(--color-muted);
+            line-height: 1.7; opacity: 0;
+            font-weight: 300;
+        }
+
+        .hero-cta-wrap {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; padding-bottom: 2.5rem;
+        }
+        @media (min-width: 640px) { .hero-cta-wrap { flex-direction: row; justify-content: center; } }
+
+        .hero-cta {
+            display: inline-flex; height: 3.5rem; align-items: center;
+            border-radius: var(--radius-pill); padding: 0 2.5rem; 
+            font-size: .875rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            opacity: 0; cursor: pointer; transition: all 300ms;
+        }
+        .hero-cta-primary {
+            background: var(--color-primary); color: #fff;
+        }
+        .hero-cta-primary:hover { background: var(--color-rust); }
+        .hero-cta-secondary {
+            border: 2px solid var(--color-primary); color: var(--color-primary);
+        }
+        .hero-cta-secondary:hover { background: var(--color-primary); color: #fff; }
+
+        .hero-scroll {
+            position: absolute; bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+            opacity: 0;
+        }
+        .hero-scroll span {
+            font-size: 0.6rem; text-transform: uppercase; letter-spacing: .18em;
+            color: var(--color-muted);
+        }
+
+        /* Paint stroke accent under title */
+        .paint-stroke {
+            display: block; margin: 0 auto 2rem;
+            height: 4px; width: 80px;
+            background: linear-gradient(90deg, var(--color-rust), var(--color-gold));
+            border-radius: 2px;
+        }
+
+        /* ===== MARQUEE / TRUST BAR ===== */
+        .trust-bar {
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1.5rem 0;
+            background: rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+        .marquee-track {
+            display: flex; flex-shrink: 0; align-items: center; gap: 2rem;
+            animation: marquee 25s linear infinite; 
+        }
+        .marquee-wrap { display: flex; overflow: hidden; }
+        .trust-item {
+            display: flex; flex-shrink: 0; align-items: center; gap: 0.5rem;
+            padding: 0 1.5rem;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: .14em;
+            color: var(--color-muted); font-weight: 500;
+            white-space: nowrap;
+        
+        }
+        .trust-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===== SECTION COMMON ===== */
+        .section-py { padding: 5rem 0; }
+        .section-inner {
+            max-width: 75rem; margin: 0 auto; padding: 0 1.5rem;
+        }
+        @media (min-width: 1024px) { .section-inner { padding: 0 3rem; } }
+        .section-eyebrow {
+            font-size: 0.68rem; text-transform: uppercase; letter-spacing: .2em;
+            color: var(--color-rust); font-weight: 600; margin-bottom: 1rem;
+            display: block;
+        }
+        .section-title {
+            font-family: var(--font-display); font-size: clamp(2rem, 3vw + 0.75rem, 3.5rem);
+            font-weight: 500; color: var(--color-primary);
+            letter-spacing: -0.02em; margin-bottom: 1.5rem;
+        }
+        .section-title em { font-style: italic; color: var(--color-rust); }
+
+        /* ===== ABOUT ===== */
+        .about-grid {
+            display: grid; gap: 3rem; align-items: center;
+        }
+        @media (min-width: 1024px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+
+        .about-img-wrap {
+            position: relative;
+        }
+        .about-img-main {
+            width: 100%; aspect-ratio: 4/3;
+            background: var(--color-primary);
+            border-radius: 4px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .about-img-accent {
+            position: absolute; bottom: -1.5rem; right: -1.5rem;
+            width: 45%; aspect-ratio: 1;
+            background: var(--color-gold);
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .about-badge {
+            position: absolute; top: -1rem; left: -1rem;
+            width: 5rem; height: 5rem; border-radius: 50%;
+            background: var(--color-rust); color: #fff;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-family: var(--font-display); text-align: center;
+            box-shadow: 0 4px 24px rgba(214,87,44,0.4);
+        }
+        .about-badge strong { font-size: 1.75rem; font-weight: 700; line-height: 1; }
+        .about-badge span { font-size: 0.5rem; text-transform: uppercase; letter-spacing: .1em; line-height: 1.4; }
+
+        .about-text p {
+            color: var(--color-muted); line-height: 1.8; font-size: 1.05rem;
+            margin-bottom: 1.25rem; font-weight: 300;
+        }
+        .about-highlights {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 1rem; margin-top: 2rem;
+        }
+        .highlight-item {
+            background: rgba(255,255,255,0.35);
+            border: 1px solid var(--color-border);
+            border-radius: 8px; padding: 1rem;
+        }
+        .highlight-num {
+            font-family: var(--font-display); font-size: 2rem;
+            font-weight: 600; color: var(--color-primary); line-height: 1;
+        }
+        .highlight-label { font-size: 0.78rem; color: var(--color-muted); margin-top: 0.25rem; }
+
+        /* ===== SERVICES ===== */
+        #services { background: var(--color-primary); }
+        .services-header { text-align: center; margin-bottom: 3.5rem; }
+        .services-header .section-eyebrow { color: var(--color-mint); }
+        .services-header .section-title { color: #fff; }
+        .services-header p { color: rgba(255,255,255,0.6); max-width: 38rem; margin: 0 auto; font-size: 1.05rem; font-weight: 300; }
+
+        .services-grid {
+            display: grid; gap: 1.5rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .service-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 2rem;
+            transition: all 400ms; cursor: default;
+            position: relative; overflow: hidden;
+        }
+        .service-card::before {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            height: 3px; width: 0; background: var(--color-rust);
+            transition: width 400ms;
+        }
+        .service-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+        .service-card:hover::before { width: 100%; }
+
+        .service-icon {
+            width: 3rem; height: 3rem; border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.25rem; font-size: 1.5rem;
+        }
+        .service-title {
+            font-family: var(--font-display); font-size: 1.25rem;
+            color: #fff; margin-bottom: 0.75rem; font-weight: 500;
+        }
+        .service-desc { color: rgba(255,255,255,0.55); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+
+        /* ===== STATS ===== */
+        .stats-section {
+            background: var(--color-dark);
+            position: relative; overflow: hidden;
+        }
+        .stats-accent {
+            position: absolute; top: 0; right: 0; width: 40%;
+            height: 100%; opacity: 0.06;
+            background: linear-gradient(135deg, var(--color-mint), transparent);
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 2rem; position: relative; z-index: 1;
+        }
+        @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 600; color: var(--color-gold); line-height: 1;
+        }
+        .stat-suffix { font-size: 0.6em; color: var(--color-rust); }
+        .stat-label {
+            font-size: 0.8rem; color: rgba(255,255,255,0.5);
+            text-transform: uppercase; letter-spacing: .1em; margin-top: 0.75rem;
+        }
+
+        /* ===== COMPARE ===== */
+        .compare-grid {
+            display: grid; gap: 1rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) { .compare-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .compare-card {
+            border-radius: 8px; overflow: hidden;
+            border: 1px solid var(--color-border);
+            background: rgba(255,255,255,0.3);
+            display: flex; flex-direction: column;
+            transition: transform 300ms;
+        }
+        .compare-card:hover { transform: translateY(-4px); }
+        .compare-card.recommended {
+            border-color: var(--color-primary);
+            background: rgba(255,255,255,0.5);
+            box-shadow: 0 8px 40px rgba(48,86,89,0.15);
+        }
+
+        .compare-head {
+            padding: 1.5rem; position: relative;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .compare-card.recommended .compare-head { background: var(--color-primary); }
+        .compare-head-title {
+            font-family: var(--font-display); font-size: 1.25rem;
+            color: var(--color-primary); font-weight: 500;
+        }
+        .compare-card.recommended .compare-head-title { color: #fff; }
+        .compare-badge-pill {
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: .12em;
+            background: var(--color-rust); color: #fff;
+            padding: 0.25rem 0.75rem; border-radius: var(--radius-pill); font-weight: 600;
+        }
+
+        .compare-body { flex: 1; padding: 1.5rem; }
+        .compare-body > p { font-size: 0.875rem; color: var(--color-muted); margin-bottom: 1.25rem; line-height: 1.6; }
+        .compare-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+        .compare-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; }
+
+        .ci { width: 1.4rem; height: 1.4rem; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; }
+        .ci-x { background: rgba(0,0,0,0.06); color: #bbb; }
+        .ci-check { background: rgba(48,86,89,0.12); color: var(--color-primary); }
+        .ci-check-accent { background: rgba(214,87,44,0.15); color: var(--color-rust); }
+        .ci svg { width: 0.75rem; height: 0.75rem; }
+        .item-off { color: #999; } .item-on { color: var(--color-text); }
+
+        /* ===== TESTIMONIALS ===== */
+        .test-stack { display: flex; flex-direction: column; gap: 0.5rem; }
+        .test-card { overflow: hidden; border-radius: 4px; }
+        .test-grid { display: grid; }
+        @media (min-width: 768px) { .test-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .test-img-side {
+            position: relative; aspect-ratio: 16/9; overflow: hidden;
+            min-height: 280px;
+        }
+        @media (min-width: 768px) { .test-img-side { aspect-ratio: auto; } }
+
+        .test-img-bg {
+            height: 100%; width: 100%; transition: transform 700ms;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .test-card:hover .test-img-bg { transform: scale(1.04); }
+
+        .test-img-label {
+            position: absolute; bottom: 1rem; left: 1rem;
+            background: rgba(48,86,89,0.85); color: #fff;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: .14em;
+            padding: 0.3rem 0.75rem; border-radius: var(--radius-pill); font-weight: 500;
+        }
+
+        .test-content {
+            display: flex; flex-direction: column; justify-content: center;
+            background: rgba(255,255,255,0.45);
+            padding: 2.5rem;
+        }
+        @media (min-width: 1024px) { .test-content { padding: 3.5rem; } }
+
+        .quote-mark { font-family: var(--font-display); font-size: 5rem; line-height: 0.5;
+            color: var(--color-mint); margin-bottom: 1rem; }
+        .test-content blockquote {
+            font-family: var(--font-display); font-size: 1.2rem; font-style: italic;
+            line-height: 1.6; color: var(--color-primary); margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+        @media (min-width: 1024px) { .test-content blockquote { font-size: 1.4rem; } }
+        .author-line { border-top: 1px solid var(--color-border); padding-top: 1.25rem; }
+        .author-name { font-size: .875rem; font-weight: 600; color: var(--color-primary); }
+        .author-role { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .12em;
+            margin-top: 0.2rem; color: var(--color-muted); }
+
+        /* Stars */
+        .stars { color: var(--color-gold); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: var(--color-rust);
+            position: relative; overflow: hidden;
+        }
+        .cta-pattern {
+            position: absolute; inset: 0; opacity: 0.1;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent, transparent 20px,
+                rgba(255,255,255,0.5) 20px, rgba(255,255,255,0.5) 21px
+            );
+        }
+        .cta-inner {
+            position: relative; z-index: 1; text-align: center;
+            padding: 6rem 1.5rem;
+        }
+        .cta-heading {
+            font-family: var(--font-display);
+            font-size: clamp(2.25rem, 4vw + 1rem, 4.5rem);
+            font-weight: 500; color: #fff; letter-spacing: -0.02em;
+            line-height: 1.1; margin-bottom: 1.5rem;
+        }
+        .cta-sub { color: rgba(255,255,255,0.75); font-size: 1.1rem; font-weight: 300;
+            max-width: 32rem; margin: 0 auto 2.5rem; line-height: 1.7; }
+        .cta-btn {
+            display: inline-flex; height: 3.5rem; align-items: center;
+            border-radius: var(--radius-pill); background: #fff;
+            padding: 0 3rem; font-size: .875rem; font-weight: 600;
+            color: var(--color-rust); text-transform: uppercase; letter-spacing: .08em;
+            transition: all 300ms; cursor: pointer; border: none;
+        }
+        .cta-btn:hover { background: var(--color-primary); color: #fff; }
+
+        /* ===== CONTACT ===== */
+        .contact-grid { display: grid; }
+        @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr; min-height: 700px; } }
+
+        .contact-left {
+            background: var(--color-primary);
+            padding: 4rem 2rem;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        @media (min-width: 1024px) { .contact-left { padding: 5rem 4rem; } }
+        .contact-left::after {
+            content: ''; position: absolute; bottom: -3rem; right: -3rem;
+            width: 12rem; height: 12rem; border-radius: 50%;
+            background: rgba(145,202,187,0.15);
+        }
+        .contact-left h3 {
+            font-family: var(--font-display); font-size: 2.5rem;
+            color: #fff; font-weight: 400; margin-bottom: 1rem; line-height: 1.2;
+        }
+        .contact-left h3 em { color: var(--color-gold); font-style: italic; }
+        .contact-left p { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.7; margin-bottom: 2.5rem; font-weight: 300; }
+
+        .contact-info-item {
+            display: flex; align-items: center; gap: 0.875rem;
+            color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 1rem;
+        }
+        .contact-info-icon {
+            width: 2.25rem; height: 2.25rem; border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .contact-info-icon svg { width: 1rem; height: 1rem; color: var(--color-mint); }
+
+        .contact-right {
+            background: rgba(255,255,255,0.4);
+            padding: 4rem 2rem;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        @media (min-width: 1024px) { .contact-right { padding: 5rem 4rem; } }
+        .contact-right h4 {
+            font-family: var(--font-display); font-size: 1.75rem;
+            color: var(--color-primary); margin-bottom: 2rem; font-weight: 500;
+        }
+
+        .contact-form { display: flex; flex-direction: column; gap: 1.75rem; }
+        .form-row { display: grid; gap: 1.75rem; }
+        @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-label {
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: .18em;
+            color: var(--color-muted); font-weight: 600; margin-bottom: 0.6rem;
+        }
+        .form-input, .form-select, .form-textarea {
+            border: none; border-bottom: 1.5px solid var(--color-border);
+            background: transparent; padding-bottom: 0.6rem;
+            color: var(--color-text); font-family: var(--font-body); font-size: 0.95rem;
+            outline: none; transition: border-color 300ms;
+            font-weight: 300;
+        }
+        .form-input::placeholder { color: #aaa; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--color-primary); }
+        .form-select { cursor: pointer; -webkit-appearance: none; }
+        .form-textarea { resize: none; min-height: 80px; line-height: 1.6; }
+
+        .form-submit {
+            display: inline-flex; height: 3.25rem; align-items: center; gap: 0.5rem;
+            border-radius: var(--radius-pill); background: var(--color-primary);
+            padding: 0 2.5rem; border: none; cursor: pointer;
+            font-family: var(--font-body); font-size: .875rem; font-weight: 600;
+            color: #fff; text-transform: uppercase; letter-spacing: .08em;
+            transition: background 300ms; align-self: flex-start;
+        }
+        .form-submit:hover { background: var(--color-rust); }
+        .form-submit svg { width: 1rem; height: 1rem; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--color-dark);
+            padding: 4rem 1.5rem 2rem;
+        }
+        @media (min-width: 1024px) { footer { padding: 5rem 3rem 2rem; } }
+
+        .footer-inner { max-width: 75rem; margin: 0 auto; }
+        .footer-grid {
+            display: grid; gap: 3rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 1024px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+
+        .footer-brand-logo {
+            display: flex; align-items: center; gap: 0.625rem;
+            margin-bottom: 1.25rem;
+        }
+        .footer-brand p {
+            color: rgba(255,255,255,0.45); font-size: 0.875rem;
+            line-height: 1.7; max-width: 22rem; font-weight: 300;
+        }
+        .footer-social { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+        .social-btn {
+            width: 2.25rem; height: 2.25rem; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.45); transition: all 300ms;
+        }
+        .social-btn:hover { border-color: var(--color-mint); color: var(--color-mint); }
+        .social-btn svg { width: 0.875rem; height: 0.875rem; }
+
+        .footer-col-label {
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: .18em;
+            color: rgba(255,255,255,0.3); margin-bottom: 1.25rem; display: block;
+        }
+        .footer-nav-link {
+            display: block; font-size: .875rem;
+            color: rgba(255,255,255,0.55); margin-bottom: 0.6rem;
+            transition: color 300ms; font-weight: 300;
+        }
+        .footer-nav-link:hover { color: #fff; }
+
+        .footer-bottom {
+            margin-top: 4rem; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between;
+            gap: 1rem; border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 2rem;
+        }
+        @media (min-width: 640px) { .footer-bottom { flex-direction: row; } }
+        .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); font-weight: 300; }
+        .footer-de-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.72rem; color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.05); border-radius: var(--radius-pill);
+            padding: 0.3rem 1rem;
+        }
+
+        .footer-logo-svg {
+    width: 120px;   /* 🔥 cambia esto según el tamaño que quieras */
+    height: auto;  /* mantiene proporción */}
+
+        /* ===== FAQ ===== */
+        .faq-list { display: flex; flex-direction: column; gap: 0; }
+        .faq-item {
+            border-bottom: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+        .faq-btn {
+            width: 100%; display: flex; align-items: center; justify-content: space-between;
+            padding: 1.5rem 0; text-align: left;
+            background: none; border: none; cursor: pointer;
+            font-family: var(--font-display); font-size: 1.1rem;
+            color: var(--color-primary); font-weight: 500;
+            transition: color 300ms;
+        }
+        .faq-btn:hover { color: var(--color-rust); }
+        .faq-icon { width: 1.25rem; height: 1.25rem; flex-shrink: 0; transition: transform 300ms; }
+        .faq-btn.open .faq-icon { transform: rotate(45deg); }
+        .faq-answer {
+            max-height: 0; overflow: hidden; transition: max-height 500ms ease;
+        }
+        .faq-answer-inner {
+            padding-bottom: 1.5rem; color: var(--color-muted);
+            font-size: 0.95rem; line-height: 1.75; font-weight: 300;
+        }
+
+        /* ===== UTILITY ===== */
+        .fade-in { opacity: 0; }
+
+        /* Paint roller SVG icon for hero cards */
+        .swatch-card {
+            width: 70px; height: 90px; border-radius: 6px;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        .swatch-label { font-size: 7px; text-transform: uppercase; letter-spacing: .1em; opacity: 0.5; }
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollBar"></div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <nav>
+            <!-- Logo -->
+            <a href="#" class="nav-logo">
+                 <img src="1_LOGO_1_PRINCIPAL_1.svg" alt="Road Running Painters" class="nav-logo-svg">
+                <div>
+                    <span class="nav-logo-sub">Delaware, USA</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="nav-links">
+                <div style="position:relative"><a href="#about" class="nav-link">About<span></span></a></div>
+                <div style="position:relative"><a href="#services" class="nav-link">Services<span></span></a></div>
+                <div style="position:relative"><a href="#projects" class="nav-link">Projects<span></span></a></div>
+                <div style="position:relative"><a href="#contact" class="nav-link">Contact<span></span></a></div>
+                <a href="#contact" class="nav-cta">Free Estimate</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" onclick="toggleMobileMenu()">About</a>
+        <a href="#services" onclick="toggleMobileMenu()">Services</a>
+        <a href="#projects" onclick="toggleMobileMenu()">Projects</a>
+        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+        <a href="#contact" onclick="toggleMobileMenu()" style="font-size:1.1rem;background:var(--color-primary);padding:0.75rem 2rem;border-radius:999px;color:#fff">Get Free Estimate</a>
+    </div>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero-section" id="heroSection">
+        <div class="hero-bg-stripes"></div>
+
+        <!-- Blobs -->
+        <div class="hero-blob hero-blob-1"></div>
+        <div class="hero-blob hero-blob-2"></div>
+        <div class="hero-blob hero-blob-3"></div>
+
+        <!-- Floating paint swatches (desktop) -->
+        <div class="hero-card" style="top:15%;left:5%;transform:rotate(-12deg)">
+            <div class="swatch-card" style="background:var(--color-primary)"><span class="swatch-label" style="color:#fff">Teal</span></div>
+        </div>
+        <div class="hero-card" style="top:20%;right:6%;transform:rotate(8deg)">
+            <div class="swatch-card" style="background:var(--color-mint)"><span class="swatch-label" style="color:var(--color-primary)">Mint</span></div>
+        </div>
+        <div class="hero-card" style="bottom:25%;left:8%;transform:rotate(6deg)">
+            <div class="swatch-card" style="background:var(--color-gold)"><span class="swatch-label" style="color:var(--color-primary)">Gold</span></div>
+        </div>
+        <div class="hero-card" style="bottom:20%;right:5%;transform:rotate(-9deg)">
+            <div class="swatch-card" style="background:var(--color-rust)"><span class="swatch-label" style="color:#fff">Rust</span></div>
+        </div>
+        <div class="hero-card" style="top:55%;left:3%;transform:rotate(14deg)">
+            <div class="swatch-card" style="background:#7a9e9f;height:70px;width:55px"><span class="swatch-label" style="color:#fff">Sage</span></div>
+        </div>
+        <div class="hero-card" style="top:40%;right:3%;transform:rotate(-5deg)">
+            <div class="swatch-card" style="background:#c8b49b;height:60px;width:50px"><span class="swatch-label" style="color:var(--color-primary)">Sand</span></div>
+        </div>
+
+        <!-- Content -->
+        <div class="hero-content">
+            <div class="hero-eyebrow">Delaware's Trusted Painters</div>
+            <h1 class="hero-title">
+                <div class="hero-word-wrap"><span class="hero-word">Your Home,</span></div><br>
+                <div class="hero-word-wrap"><span class="hero-word italic"><em>Beautifully</em></span></div>
+                <div class="hero-word-wrap"><span class="hero-word"> Painted.</span></div>
+            </h1>
+            <span class="paint-stroke"></span>
+            <p class="hero-sub">
+                Premium interior &amp; exterior painting across Delaware. We bring color, craft, and care to every project — exceeding your expectations, every time.
+            </p>
+            <div class="hero-cta-wrap">
+                <a href="#contact" class="hero-cta hero-cta-primary">Get a Free Estimate</a>
+                <a href="#projects" class="hero-cta hero-cta-secondary">See Our Work</a>
+            </div>
+        </div>
+
+        
+    </section>
+
+    <!-- ============ TRUST BAR ============ -->
+    <div class="trust-bar">
+        <div class="marquee-wrap">
+            <div class="marquee-track" id="trustTrack">
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>Licensed &amp; Insured</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Serving All of Delaware</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-mint)"></span>Free Estimates</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-primary)"></span>Premium Paints Only</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>5-Star Rated</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Residential &amp; Commercial</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-mint)"></span>Cabinet Refinishing</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-primary)"></span>Power Washing</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>Drywall Repair</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Color Consultation</span>
+                <!-- Duplicate for seamless loop -->
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>Licensed &amp; Insured</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Serving All of Delaware</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-mint)"></span>Free Estimates</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-primary)"></span>Premium Paints Only</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>5-Star Rated</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Residential &amp; Commercial</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-mint)"></span>Cabinet Refinishing</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-primary)"></span>Power Washing</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-rust)"></span>Drywall Repair</span>
+                <span class="trust-item"><span class="trust-dot" style="background:var(--color-gold)"></span>Color Consultation</span>
+            </div>
+        </div>
+    </div>
+
+    <main>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section-py">
+        <div class="section-inner">
+            <div class="about-grid">
+                <!-- Image side -->
+                <div class="about-img-wrap fade-in">
+                    <div class="about-img-main">
+                        <!-- Illustrated house painting scene -->
+                        <img 
+                        src="https://images.unsplash.com/photo-1724582586529-62622e50c0b3?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="House painting service"
+                        class="about-img">
+                    </div>
+                    <div class="about-img-accent">
+                       <img 
+                        src="https://images.unsplash.com/photo-1724582586495-d050726cf354?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                        alt="House painting service"
+                        class="about-img">
+                    </div>
+                    <div class="about-badge">
+                        <strong>15+</strong>
+                        <span>Years of<br>Excellence</span>
+                    </div>
+                </div>
+
+                <!-- Text side -->
+                <div class="about-text">
+                    <span class="section-eyebrow fade-in">About Road Running Painters</span>
+                    <h2 class="section-title fade-in">Delaware's <em>most trusted</em> painting crew.</h2>
+                    <p class="fade-in">At Road Running Painters, our mission is to transform your spaces with stunning and vibrant paintwork. We believe that a fresh coat of paint can breathe new life into any room and reflect your unique style.</p>
+                    <p class="fade-in">Founded right here in Delaware, our team of skilled painters brings professionalism, attention to detail, and genuine care to every job — whether it's a single room refresh or a full exterior transformation.</p>
+                    <div class="about-highlights fade-in">
+                        <div class="highlight-item">
+                            <div class="highlight-num"><span class="counter" data-target="500">0</span>+</div>
+                            <div class="highlight-label">Homes painted</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-num"><span class="counter" data-target="98">0</span>%</div>
+                            <div class="highlight-label">Client satisfaction</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-num"><span class="counter" data-target="15">0</span>+</div>
+                            <div class="highlight-label">Years experience</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-num"><span class="counter" data-target="5">0</span>★</div>
+                            <div class="highlight-label">Average rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="section-py">
+        <div class="section-inner">
+            <div class="services-header fade-in">
+                <span class="section-eyebrow">What We Do</span>
+                <h2 class="section-title" style="color:#fff">Expert painting, <em>every surface.</em></h2>
+                <p>From walls and ceilings to cabinets and decks — we handle it all with premium products and meticulous technique.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏠</div>
+                    <div class="service-title">Interior Painting</div>
+                    <p class="service-desc">Walls, ceilings, trim, and doors — we work around your schedule with minimal disruption and flawless results.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏡</div>
+                    <div class="service-title">Exterior Painting</div>
+                    <p class="service-desc">Protect and beautify your home's exterior with weather-resistant paints engineered for Delaware's climate.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🗄️</div>
+                    <div class="service-title">Cabinet Refinishing</div>
+                    <p class="service-desc">Transform your kitchen or bathroom cabinets without a full remodel. Durable factory-quality finish.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🔧</div>
+                    <div class="service-title">Drywall Repair</div>
+                    <p class="service-desc">Holes, cracks, water damage — we repair and prep surfaces before every paint job for a perfect result.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">💧</div>
+                    <div class="service-title">Power Washing</div>
+                    <p class="service-desc">Surfaces deep-cleaned before painting for superior adhesion — decks, driveways, siding, and more.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🎨</div>
+                    <div class="service-title">Color Consultation</div>
+                    <p class="service-desc">Not sure what color? Our experts guide you to the perfect palette for your space, lifestyle, and taste.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="stats-section section-py">
+        <div class="stats-accent"></div>
+        <div class="section-inner">
+            <div style="text-align:center;margin-bottom:3rem">
+                <span class="section-eyebrow fade-in" style="color:var(--color-mint)">By the Numbers</span>
+                <h2 class="section-title fade-in" style="color:#fff">Results that <em>speak</em> for themselves.</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number"><span class="counter" data-target="500">0</span><span class="stat-suffix">+</span></div>
+                    <div class="stat-label">Projects completed</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number"><span class="counter" data-target="15">0</span><span class="stat-suffix"> Yrs</span></div>
+                    <div class="stat-label">In business</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number"><span class="counter" data-target="98">0</span><span class="stat-suffix">%</span></div>
+                    <div class="stat-label">Client satisfaction</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></div>
+                    <div class="stat-label">Licensed &amp; insured</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ COMPARISON ============ -->
+    <section class="section-py" id="compare">
+        <div class="section-inner">
+            <div style="text-align:center;margin-bottom:3rem">
+                <span class="section-eyebrow fade-in">Why Choose Us?</span>
+                <h2 class="section-title fade-in">Specialists win. <em>Every time.</em></h2>
+            </div>
+            <div class="compare-grid">
+                <div class="compare-card fade-in">
+                    <div class="compare-head">
+                        <span class="compare-head-title">Handyman</span>
+                    </div>
+                    <div class="compare-body">
+                        <p>Jack of all trades — no deep painting expertise or premium products.</p>
+                        <ul class="compare-list">
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Premium paint brands</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Dedicated surface prep</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Color consultation</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Licensed &amp; insured</span></li>
+                            <li><span class="ci ci-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Low cost</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="compare-card recommended fade-in">
+                    <div class="compare-head">
+                        <span class="compare-head-title">Road Running Painters</span>
+                        <span class="compare-badge-pill">Best Choice</span>
+                    </div>
+                    <div class="compare-body">
+                        <p>Dedicated painting specialists — premium products, full prep, and exceptional finish.</p>
+                        <ul class="compare-list">
+                            <li><span class="ci ci-check-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Premium paint brands</span></li>
+                            <li><span class="ci ci-check-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Dedicated surface prep</span></li>
+                            <li><span class="ci ci-check-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Color consultation</span></li>
+                            <li><span class="ci ci-check-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Licensed &amp; insured</span></li>
+                            <li><span class="ci ci-check-accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Free estimate</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="compare-card fade-in">
+                    <div class="compare-head">
+                        <span class="compare-head-title">Big Box Contractor</span>
+                    </div>
+                    <div class="compare-body">
+                        <p>High prices, impersonal service, and subcontractors you've never met.</p>
+                        <ul class="compare-list">
+                            <li><span class="ci ci-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Premium paint brands</span></li>
+                            <li><span class="ci ci-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="item-on">Licensed &amp; insured</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Local community care</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Transparent pricing</span></li>
+                            <li><span class="ci ci-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span><span class="item-off">Free estimate</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section-py" id="projects">
+        <div style="max-width:75rem;margin:0 auto;padding:0 1.5rem 3rem">
+            <div style="text-align:center">
+                <span class="section-eyebrow fade-in">What Clients Say</span>
+                <h2 class="section-title fade-in">Happy homes, <em>told by our clients.</em></h2>
+            </div>
+        </div>
+        <div class="test-stack">
+            <!-- Testimonial 1 -->
+            <div class="test-card fade-in">
+                <div class="test-grid">
+                    <div class="test-img-side">
+                        <div class="test-img-bg" style="background:linear-gradient(135deg,var(--color-primary),#1a3a3d)">
+                            <img 
+                             src="https://images.unsplash.com/photo-1723642613187-811b1d1caad1?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                            alt="House painting service"
+                            class="about-img">
+                        </div>
+                        <span class="test-img-label">Interior – Wilmington, DE</span>
+                    </div>
+                    <div class="test-content">
+                        <div class="stars">★★★★★</div>
+                        <div class="quote-mark">"</div>
+                        <blockquote>Road Running Painters transformed our living room completely. Punctual, clean, and the finish is absolutely perfect. We couldn't be happier.</blockquote>
+                        <div class="author-line">
+                            <p class="author-name">Jennifer & Mark T.</p>
+                            <p class="author-role">Homeowner — Wilmington, Delaware</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="test-card fade-in">
+                <div class="test-grid" style="direction:rtl">
+                    <div class="test-img-side" style="direction:ltr">
+                        <div class="test-img-bg" style="background:linear-gradient(135deg,#3a2510,#6b3d1a)">
+                            <img 
+                             src="https://images.unsplash.com/photo-1682888818620-94875adf5bb9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                            alt="House painting service"
+                            class="about-img">
+                        </div>
+                        <span class="test-img-label">Cabinet Refinish – Newark, DE</span>
+                    </div>
+                    <div class="test-content" style="direction:ltr">
+                        <div class="stars">★★★★★</div>
+                        <div class="quote-mark">"</div>
+                        <blockquote>Our cabinets look brand new — saved us thousands versus a full kitchen remodel. The team was professional from start to finish.</blockquote>
+                        <div class="author-line">
+                            <p class="author-name">Carlos M.</p>
+                            <p class="author-role">Homeowner — Newark, Delaware</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="test-card fade-in">
+                <div class="test-grid">
+                    <div class="test-img-side">
+                        <div class="test-img-bg" style="background:linear-gradient(135deg,#1f3d40,#2c5a5e)">
+                             <img 
+                             src="https://images.unsplash.com/photo-1560184897-ae75f418493e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                            alt="House painting service"
+                            class="about-img">
+                        </div>
+                        <span class="test-img-label">Exterior – Dover, DE</span>
+                    </div>
+                    <div class="test-content">
+                        <div class="stars">★★★★★</div>
+                        <div class="quote-mark">"</div>
+                        <blockquote>The exterior of our house has never looked this good. They power washed, prepped, and painted — all in less time than quoted. Incredible work.</blockquote>
+                        <div class="author-line">
+                            <p class="author-name">Patricia L.</p>
+                            <p class="author-role">Homeowner — Dover, Delaware</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section-py" style="background:rgba(255,255,255,0.3)">
+        <div class="section-inner">
+            <div style="display:grid;gap:3rem" class="faq-layout">
+                <div style="max-width:38rem">
+                    <span class="section-eyebrow fade-in">FAQ</span>
+                    <h2 class="section-title fade-in">Common questions, <em>answered.</em></h2>
+                    <p class="fade-in" style="color:var(--color-muted);line-height:1.7;font-weight:300">Can't find your answer? Email us at <a href="mailto:roadrunningpainter@gmail.com" style="color:var(--color-rust)">roadrunningpainter@gmail.com</a></p>
+                </div>
+                <div>
+                <div class="faq-list">
+                    <div class="faq-item fade-in">
+                        <button class="faq-btn" onclick="toggleFaq(this)">
+                            What does a free estimate include?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-inner">Our free estimate includes a breakdown of time required, paint and labor costs, and a list of things you can do before we arrive to make everything go as quickly and smoothly as possible.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in">
+                        <button class="faq-btn" onclick="toggleFaq(this)">
+                            Are you licensed and insured in Delaware?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-inner">Yes — we hold all licenses and insurance required for residential and commercial painting work in Delaware. We'll happily provide documentation upon request.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in">
+                        <button class="faq-btn" onclick="toggleFaq(this)">
+                            How often should I repaint the exterior of my home?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-inner">A quality paint job typically lasts 5 to 10 years. Stucco and masonry tend to last longer, while wood siding expands and contracts with temperature, creating faster wear. We'll assess your specific material and give honest guidance.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in">
+                        <button class="faq-btn" onclick="toggleFaq(this)">
+                            What paint brands do you use?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-inner">We work exclusively with premium paint brands including Sherwin-Williams, Benjamin Moore, and Behr. We'll work with you to select the best product for your surface, budget, and finish preference.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-in">
+                        <button class="faq-btn" onclick="toggleFaq(this)">
+                            How long does a typical project take?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-inner">A single room typically takes 1 day. Full interior jobs range from 3–5 days depending on size and prep needed. Exterior projects usually take 2–4 days. We'll give you an accurate timeline during your free estimate.</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CLOSING CTA ============ -->
+    <section class="cta-section">
+        <div class="cta-pattern"></div>
+        <div class="cta-inner">
+            <div class="fade-in">
+                <h2 class="cta-heading">Your home deserves<br>a fresh start.</h2>
+                <p class="cta-sub">Get your free, no-obligation estimate today — and see why Delaware homeowners trust Road Running Painters.</p>
+                <a href="#contact" class="cta-btn">Book a Free Estimate</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact">
+        <div class="contact-grid">
+            <!-- Left info panel -->
+            <div class="contact-left">
+                <h3>Let's talk about<br><em>your project.</em></h3>
+                <p>Fill out the form and we'll be in touch within 24 hours with your free estimate and a suggested start date.</p>
+                <div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <span>Available by phone — quick response</span>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </div>
+                        <span>roadrunningpainter@gmail.com</span>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <span>Serving all of Delaware, USA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right form -->
+            <div class="contact-right">
+                <h4>Request a Free Estimate</h4>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input class="form-input" type="text" placeholder="John" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input class="form-input" type="text" placeholder="Smith" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input class="form-input" type="email" placeholder="john@email.com" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input class="form-input" type="tel" placeholder="(302) 555-0100" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Service Needed</label>
+                        <select class="form-select">
+                            <option value="">Select a service…</option>
+                            <option>Interior Painting</option>
+                            <option>Exterior Painting</option>
+                            <option>Cabinet Refinishing</option>
+                            <option>Drywall Repair</option>
+                            <option>Power Washing</option>
+                            <option>Multiple / Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tell us about your project</label>
+                        <textarea class="form-textarea" placeholder="Describe the rooms, surfaces, or areas you need painted…"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">
+                        Send Request
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo">
+                      <img src="1_LOGO_BLANCO-01.svg" class="footer-logo-svg">
+                        
+                    </div>
+                    <p>Premium residential and commercial painting services across Delaware. Exceeding your expectations on every project.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-btn" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Google">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M17.65 9H12v3h3.35A4.5 4.5 0 1 1 8.5 12H8"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="footer-col-label">Services</span>
+                    <a href="#services" class="footer-nav-link">Interior Painting</a>
+                    <a href="#services" class="footer-nav-link">Exterior Painting</a>
+                    <a href="#services" class="footer-nav-link">Cabinet Refinishing</a>
+                    <a href="#services" class="footer-nav-link">Drywall Repair</a>
+                    <a href="#services" class="footer-nav-link">Power Washing</a>
+                </div>
+
+                <div>
+                    <span class="footer-col-label">Company</span>
+                    <a href="#about" class="footer-nav-link">About Us</a>
+                    <a href="#projects" class="footer-nav-link">Our Projects</a>
+                    <a href="#compare" class="footer-nav-link">Why Us?</a>
+                    <a href="#contact" class="footer-nav-link">Contact</a>
+                </div>
+
+                <div>
+                    <span class="footer-col-label">Service Areas</span>
+                    <a href="#" class="footer-nav-link">Wilmington</a>
+                    <a href="#" class="footer-nav-link">Newark</a>
+                    <a href="#" class="footer-nav-link">Dover</a>
+                    <a href="#" class="footer-nav-link">Middletown</a>
+                    <a href="#" class="footer-nav-link">All of Delaware</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 Road Running Painters. All rights reserved.</p>
+                <span class="footer-de-badge">
+                    <svg style="width:1rem;height:1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Delaware, USA
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ===== SCROLL PROGRESS =====
+        window.addEventListener('scroll', () => {
+            const bar = document.getElementById('scrollBar');
+            const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            bar.style.transform = `scaleX(${progress})`;
+        });
+
+        // ===== HEADER SCROLL =====
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // ===== FAQ =====
+        function toggleFaq(btn) {
+            const answer = btn.nextElementSibling;
+            const isOpen = btn.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-btn.open').forEach(b => {
+                b.classList.remove('open');
+                b.nextElementSibling.style.maxHeight = '0';
+            });
+            if (!isOpen) {
+                btn.classList.add('open');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        }
+
+        // ===== FORM SUBMIT =====
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.form-submit');
+            btn.textContent = '✓ Request Sent!';
+            btn.style.background = 'var(--color-mint)';
+            btn.style.color = 'var(--color-primary)';
+        }
+
+        // ===== HERO ANIMATION =====
+        const heroTl = gsap.timeline({ delay: 0.3 });
+
+        heroTl.fromTo('.hero-card',
+            { opacity: 0, scale: 0.5, rotation: 0 },
+            { opacity: 1, scale: 1, duration: 1.2, ease: 'back.out(1.4)', stagger: { each: 0.1, from: 'random' }, clearProps: 'scale' }
+        )
+        .fromTo('.hero-word',
+            { y: '110%', rotateX: -80 },
+            { y: '0%', rotateX: 0, duration: 1, ease: 'power3.out', stagger: 0.08 },
+            '-=0.8'
+        )
+        .fromTo('.hero-eyebrow',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+            0.2
+        )
+        .fromTo('.paint-stroke',
+            { scaleX: 0, transformOrigin: 'left' },
+            { scaleX: 1, duration: 0.6, ease: 'power2.out' },
+            '-=0.5'
+        )
+        .fromTo('.hero-sub',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+            '-=0.4'
+        )
+        .fromTo('.hero-cta',
+            { opacity: 0, y: 15 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.1 },
+            '-=0.3'
+        )
+        .fromTo('#heroScroll',
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5 },
+            '-=0.2'
+        );
+
+        // Hero chevron bounce
+        gsap.to('.hero-chevron', { y: 5, duration: 1.2, ease: 'power1.inOut', repeat: -1, yoyo: true });
+
+        // Hero cards floating
+        document.querySelectorAll('.hero-card').forEach((card, i) => {
+            gsap.to(card, {
+                y: (i % 2 === 0 ? -1 : 1) * 18,
+                duration: 3.5 + i * 0.4,
+                ease: 'sine.inOut', repeat: -1, yoyo: true
+            });
+        });
+
+        // ===== FADE-IN SCROLL ANIMATIONS =====
+        document.querySelectorAll('.fade-in').forEach(el => {
+            gsap.fromTo(el,
+                { opacity: 0, y: 35 },
+                { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+                  scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+                }
+            );
+        });
+
+        // ===== COUNTER ANIMATION =====
+        document.querySelectorAll('.counter').forEach(el => {
+            const target = parseInt(el.dataset.target);
+            const obj = { val: 0 };
+            gsap.to(obj, {
+                val: target, duration: 2.5, ease: 'power2.out',
+                onUpdate: () => { el.textContent = Math.round(obj.val); },
+                scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+            });
+        });
+
+        // ===== TESTIMONIAL WIPE =====
+        document.querySelectorAll('.test-card').forEach(card => {
+            gsap.fromTo(card,
+                { clipPath: 'inset(100% 0 0 0)' },
+                { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.inOut',
+                  scrollTrigger: { trigger: card, start: 'top 88%' }
+                }
+            );
+        });
+
+        // ===== SERVICE CARDS =====
+        gsap.fromTo('.service-card',
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1,
+              scrollTrigger: { trigger: '.services-grid', start: 'top 80%' }
+            }
+        );
+
+        // ===== COMPARE CARDS =====
+        gsap.fromTo('.compare-card',
+            { opacity: 0, clipPath: 'inset(100% 0 0 0)' },
+            { opacity: 1, clipPath: 'inset(0% 0 0 0)', duration: 1, ease: 'power3.inOut', stagger: 0.15,
+              scrollTrigger: { trigger: '.compare-grid', start: 'top 80%' }
+            }
+        );
+
+        // ===== ABOUT IMAGE WIPE =====
+        gsap.fromTo('.about-img-main',
+            { clipPath: 'inset(100% 0 0 0)' },
+            { clipPath: 'inset(0% 0 0 0)', duration: 1.4, ease: 'power4.inOut',
+              scrollTrigger: { trigger: '.about-img-main', start: 'top 80%' }
+            }
+        );
+
+        // Paint stroke accent
+        gsap.fromTo('.paint-stroke', { scaleX: 0 }, { scaleX: 1, duration: 0.5 });
+    </script>
+
+</body>
+</html>
